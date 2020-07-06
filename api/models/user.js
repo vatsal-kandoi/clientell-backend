@@ -1,0 +1,19 @@
+const mongoose = require('mongoose');
+
+let user = new mongoose.Schema({
+  name: {type: String},
+  email: {type: String},
+  password: {type: String},
+  projects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Project'}],
+  createdAt: { type: Date, default: Date.now() },
+});
+
+user.pre('save', next => {
+  now = new Date();
+  if(!this.createdAt) this.createdAt = now;
+  next();
+});
+
+user = mongoose.model('User', user);
+
+module.exports = user;
