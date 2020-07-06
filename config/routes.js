@@ -38,8 +38,8 @@ router.post('/project/issue/close', project.CloseIssue);
 
 router.post('/project/feature/add', project.AddFeature);
 router.post('/project/feature/remove', project.RemoveFeature);
-
-
+router.post('/project/feature/complete', project.MarkFeatureComplete);
+router.post('/project/feature/accept', project.MarkFeatureAccepted);
 
 /** Comment routes */
 router.post('/comment/add', comment.add);

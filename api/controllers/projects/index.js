@@ -15,5 +15,6 @@ module.exports.CloseIssue = require('./edit-issue').close;
 
 module.exports.AddFeature = require('./feature').add;
 module.exports.RemoveFeature = require('./feature').remove;
-
+module.exports.MarkFeatureAccepted = require('./edit-feature').acceptFeature;
+module.exports.MarkFeatureComplete = require('./edit-feature').markComplete;
 
