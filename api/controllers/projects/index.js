@@ -9,3 +9,6 @@ module.exports.RemoveUser = require('./user').remove;
 
 module.exports.AddIssue = require('./issue').add;
 module.exports.RemoveIssue = require('./issue').remove;
+
+module.exports.AddFeature = require('./feature').add;
+module.exports.RemoveFeature = require('./feature').remove;

@@ -24,7 +24,7 @@ module.exports = async (req, res) => {
 
         await User.findOneAndUpdate({_id: userId}, {"$push": {projects: project._id}});
 
-        return res.json({...Success, project: project._id});        
+        return res.json({...Success, id: project._id});        
     } catch (err) {
         logger.error({error: err, message: "An error occured"});
         return res.json(ServerError);

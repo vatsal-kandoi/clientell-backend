@@ -6,25 +6,16 @@ let project = new mongoose.Schema({
       for: {type: String}, link: {type: String},
     }],
     closed: {
+        /** By admin */
         admin: {type: Boolean, default: false},
+        /** By client */
         client: {type: Boolean, default: false},
     },
+    /** By admin */
     users: [{user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}, access: String}],
-    features: [{
-        description: {type: String},
-        deadline: {type: Date},
-        status: {type: String},
-        completed: {type: Boolean},
-        accepted: {type: Boolean},
-        comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
-        addedOn: {type: Date, default: Date.now()},
-    }],
-    issues: [{
-        description: {type: String},
-        comments: [{type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
-        addedOn: {type: Date, default: Date.now()},
-        addedBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    }],
+    /** By client */
+    features: [{type: mongoose.Schema.Types.ObjectId, ref: 'Feature'}],
+    issues: [{type: mongoose.Schema.Types.ObjectId, ref: 'Issue'}],
     createdAt: {type: Date, default: Date.now()},
     by: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 });

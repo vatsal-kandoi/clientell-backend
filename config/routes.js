@@ -31,6 +31,9 @@ router.post('/project/user/remove', project.RemoveUser);
 router.post('/project/issue/add', project.AddIssue);
 router.post('/project/issue/remove', project.RemoveIssue);
 
+router.post('/project/feature/add', project.AddFeature);
+router.post('/project/feature/remove', project.RemoveFeature);
+
 
 router.use('*', (err, req, res, next) => {
     logger.error({error: err, message: 'An error occured'});
