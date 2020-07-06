@@ -2,7 +2,6 @@ const {User, Project} = require('../../models');
 const logger = require('./winston');
 
 const {ServerError, Success} = require('../../responses');
-const user = require('../../models/user');
 
 /**
  * @desc Express create project endpoint

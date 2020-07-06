@@ -3,6 +3,7 @@ const logger = require('./winston');
 
 /** Controllers */
 const auth = require('../api/controllers/auth');
+const project = require('../api/controllers/projects');
 
 /** Validators */
 const AuthValidator = require('../api/validators/auth');
@@ -17,6 +18,10 @@ router.post('/auth/login', AuthValidator.login, auth.UserLogin);
 router.post('/auth/signup', AuthValidator.signup, auth.UserSignup);
 
 router.use("*", userAuth);
+
+router.post('/project/create', project.AddProject);
+router.post('/project/link/add', project.AddLink);
+router.post('/project/link/remove', project.RemoveLink);
 
 router.use("*", (err, req, res, next) => {
     logger.error({error: err, message: "An error occured"});
