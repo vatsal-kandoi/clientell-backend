@@ -21,6 +21,7 @@ router.use('/project', userAuth);
 
 router.post('/project/create', project.AddProject);
 router.post('/project/delete', project.DeleteProject);
+router.post('/project/close', project.CloseProject);
 
 router.post('/project/link/add', project.AddLink);
 router.post('/project/link/remove', project.RemoveLink);
@@ -34,6 +35,8 @@ router.post('/project/issue/remove', project.RemoveIssue);
 router.post('/project/feature/add', project.AddFeature);
 router.post('/project/feature/remove', project.RemoveFeature);
 
+router.post('/project/issue/open', project.OpenIssue);
+router.post('/project/issue/close', project.CloseIssue);
 
 router.use('*', (err, req, res, next) => {
     logger.error({error: err, message: 'An error occured'});

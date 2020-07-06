@@ -7,9 +7,9 @@ let project = new mongoose.Schema({
     }],
     closed: {
         /** By admin */
-        admin: {type: Boolean, default: false},
+        admin: {value: {type: Boolean, default: false}, by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null}},
         /** By client */
-        client: {type: Boolean, default: false},
+        client: {value: {type: Boolean, default: false}, by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null}},
     },
     /** By admin */
     users: [{user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}, access: String}],
