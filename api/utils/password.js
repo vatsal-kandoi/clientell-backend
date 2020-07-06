@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt');
-const { verify } = require('jsonwebtoken');
 
 module.exports = {
-    /** Hash password */
-    hash: (password) => {
+    /**
+     * @desc Hash password
+     * @param {string} password Password entered
+     **/
+     hash: (password) => {
         return new Promise((resolve, reject) => {
             bcrypt.hash(password, 10, (err, hash) => {
                 if (err) return reject(err);
@@ -12,7 +14,11 @@ module.exports = {
         })
     },
 
-    /** Verify password */
+    /**
+     * @desc Verify password
+     * @param {string} password Password entered
+     * @param {string} hash Hash of password stored
+     **/
     verify: (password, hash) => {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, hash, function(err, res) {
