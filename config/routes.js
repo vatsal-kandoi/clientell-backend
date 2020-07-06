@@ -28,6 +28,10 @@ router.post('/project/link/remove', project.RemoveLink);
 router.post('/project/user/add', project.AddUser);
 router.post('/project/user/remove', project.RemoveUser);
 
+router.post('/project/issue/add', project.AddIssue);
+router.post('/project/issue/remove', project.RemoveIssue);
+
+
 router.use('*', (err, req, res, next) => {
     logger.error({error: err, message: 'An error occured'});
     return res.json(ServerError)
