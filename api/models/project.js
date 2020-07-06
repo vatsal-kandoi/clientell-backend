@@ -5,6 +5,10 @@ let project = new mongoose.Schema({
     links: [{
       for: {type: String}, link: {type: String},
     }],
+    closed: {
+        admin: {type: Boolean, default: false},
+        client: {type: Boolean, default: false},
+    },
     users: [{user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}, access: String}],
     features: [{
         description: {type: String},
@@ -21,12 +25,13 @@ let project = new mongoose.Schema({
         addedOn: {type: Date, default: Date.now()},
     }],
     createdAt: {type: Date, default: Date.now()},
+    by: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
 });
 
 project.pre('save', next => {
-  now = new Date();
-  if(!this.createdAt) this.createdAt = now;
-  next();
+    now = new Date();
+    if(!this.createdAt) this.createdAt = now;
+    next();
 });
 
 project = mongoose.model('Project', project);

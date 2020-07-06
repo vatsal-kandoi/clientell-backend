@@ -13,8 +13,8 @@ const ServerError = require('../api/responses').ServerError;
 const userAuth = require('../api/policies/userAuthPolicy');
 
 /** Authorization routes */
-router.post('/auth/login', AuthValidator.login, auth.login);
-router.post('/auth/signup', AuthValidator.signup, auth.signup);
+router.post('/auth/login', AuthValidator.login, auth.UserLogin);
+router.post('/auth/signup', AuthValidator.signup, auth.UserSignup);
 
 router.use("*", userAuth);
 
