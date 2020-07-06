@@ -5,6 +5,7 @@ const logger = require('./winston');
 const auth = require('../api/controllers/auth');
 const project = require('../api/controllers/projects');
 const comment = require('../api/controllers/comment');
+const user = require('../api/controllers/user');
 
 /** Validators */
 const AuthValidator = require('../api/validators/auth');
@@ -40,6 +41,12 @@ router.post('/project/feature/add', project.AddFeature);
 router.post('/project/feature/remove', project.RemoveFeature);
 router.post('/project/feature/complete', project.MarkFeatureComplete);
 router.post('/project/feature/accept', project.MarkFeatureAccepted);
+
+/** User routes and dashboard */
+router.post('/user/search', user.SearchUser);
+router.get('/user/project', user.GetAllProject);
+router.post('/user/project', user.GetProject);
+router.post('/user/comments', user.GetComments);
 
 /** Comment routes */
 router.post('/comment/add', comment.add);
