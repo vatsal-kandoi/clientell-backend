@@ -1,5 +1,5 @@
 const {Project, Feature} = require('../../models');
-const logger = require('./winston');
+const logger = require('../../../config/winston');
 
 const {ServerError, Success} = require('../../responses');
 

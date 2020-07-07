@@ -1,5 +1,5 @@
 const {Project, Feature} = require('../../models');
-const logger = require('./winston');
+const logger = require('../../../config/winston');
 
 const {ServerError, Success} = require('../../responses');
 
@@ -10,7 +10,7 @@ module.exports = {
      * @desc Express edit completion status of feature endpoint
      * @endpoint /api/project/feature/complete
      */
-    markComplete: (req, res) => {
+    markComplete: async (req, res) => {
         try {
             const {userId, status, projectId, featureId} = req.body;
             
@@ -34,7 +34,7 @@ module.exports = {
      * @desc Express edit accepted status of feature endpoint
      * @endpoint /api/project/feature/accept
      */
-    acceptFeature: (req, res) => {
+    acceptFeature: async (req, res) => {
         try {
             const {userId, status, projectId, featureId} = req.body;
             

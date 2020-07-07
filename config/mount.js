@@ -21,7 +21,7 @@ module.exports = {
     this.app = require('./middleware')(this.app);
     logger.info({message: 'Mounted middlewares to express application'});
 
-    this.app.use(require('./routes'));
+    this.app.use('/api',require('./routes'));
     logger.info({message: 'Mounted express routes'});
     
     return;

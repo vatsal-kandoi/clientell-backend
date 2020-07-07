@@ -2,7 +2,7 @@ const {User} = require('../../models');
 const {generate} = require('../../utils/jwt');
 const {verify} = require('../../utils/password');
 
-const {NotFound, AuthError} = require('../../responses');
+const {NotFound, AuthError, Success} = require('../../responses');
 
 /**
  * @desc Express login endpoint
@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
         let refresh_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'refresh_token', expires: Date.now() + 300*60*1000 });
         
         return res.json({
-            ...responses.Success,
+            ...Success,
             access_token,
             refresh_token,
             name: user.name,

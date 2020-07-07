@@ -1,5 +1,5 @@
 const {User, Project} = require('../../models');
-const logger = require('./winston');
+const logger = require('../../../config/winston');
 
 const {ServerError, Success} = require('../../responses');
 
@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
         const project = await Project.findOneAndDelete({_id: projectId, users: { $elemMatch: {user: userId, access: 'admin'}}});
         if (project == null) return res.json(ServerError);
 
-        project.users.forEach(element => {
+        project.users.forEach(async function (element) {
             await User.findOneAndUpdate({_id: element.user._id}, {"$pull": {projects: project._id}});    
         });
 

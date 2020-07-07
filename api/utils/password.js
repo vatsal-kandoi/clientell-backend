@@ -7,9 +7,12 @@ module.exports = {
      **/
      hash: (password) => {
         return new Promise((resolve, reject) => {
-            bcrypt.hash(password, 10, (err, hash) => {
+            bcrypt.genSalt(10,(err,salt) => {
                 if (err) return reject(err);
-                return resolve(hash);
+                bcrypt.hash(password, salt , (err, hash) =>{
+                    if (err) return reject(err);
+                    return resolve(hash);
+                });
             });
         })
     },

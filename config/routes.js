@@ -13,13 +13,15 @@ const AuthValidator = require('../api/validators/auth');
 /** Responses */
 const ServerError = require('../api/responses').ServerError;
 
-const userAuth = require('../api/policies/userAuthPolicy');
+const userAuth = require('../api/policies/auth');
 
 /** Authorization routes */
 router.post('/auth/login', AuthValidator.login, auth.UserLogin);
 router.post('/auth/signup', AuthValidator.signup, auth.UserSignup);
 
-router.use('*', userAuth);
+router.use('/project', userAuth);
+router.use('/user', userAuth);
+router.use('/comment', userAuth);
 
 /** Project routes */
 router.post('/project/create', project.AddProject);
