@@ -17,13 +17,14 @@ module.exports = async (req, res) => {
         const same = await verify(password, user.password);
         if (!same) return res.json({...AuthError, message: 'Email and password combination does not match'});
         
-        let access_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'access_token', expires: Date.now() + 300*60*1000 });
-        let refresh_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'refresh_token', expires: Date.now() + 300*60*1000 });
-        
+        let access_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'access_token', expires: Date.now() + 30000*60*1000 });
+        let refresh_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'refresh_token', expires: Date.now() + 30000*60*1000 });
+        if (access_token.success == false || refresh_token.success == undefined) return res.json(ServerError);
+
         return res.json({
             ...Success,
-            access_token,
-            refresh_token,
+            access_token: access_token.token,
+            refresh_token: refresh_token.token,
             name: user.name,
         });
     } catch (err) {
