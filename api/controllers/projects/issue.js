@@ -26,7 +26,7 @@ module.exports = {
             if (issue == null) return res.json(ServerError);
 
             await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: 'client'}}},
-                {"push": { issues: issue._id}});
+                {"$push": { issues: issue._id}});
 
             return res.json({...Success, id: issue._id});
         } catch (err) {
@@ -44,7 +44,7 @@ module.exports = {
             const {issueId, projectId, userId} = req.body;
             
             await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: 'client'}}},
-                {"pull": { issues: { issueId }}});
+                {"$pull": { issues: { issueId }}});
 
             await Issue.findOneAndDelete({_id: issueId});
 
