@@ -25,11 +25,12 @@ module.exports = {
 
             if (issue == null) return res.json(ServerError);
 
-            await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: 'client'}}},
+            await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}},
                 {"$push": { issues: issue._id}});
 
             return res.json({...Success, id: issue._id});
         } catch (err) {
+            console.log(err);
             logger.error({error: err, message: 'An error occured'});
             return res.json(ServerError);
         }
@@ -43,8 +44,8 @@ module.exports = {
         try {
             const {issueId, projectId, userId} = req.body;
             
-            await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: 'client'}}},
-                {"$pull": { issues: { issueId }}});
+            await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}},
+                {"$pull": { issues: issueId}});
 
             await Issue.findOneAndDelete({_id: issueId});
 

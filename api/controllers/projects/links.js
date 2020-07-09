@@ -22,12 +22,12 @@ module.exports = {
 
     /**
      * @desc Express remove link endpoint
-     * @endpoint /api/project/link/remove0
+     * @endpoint /api/project/link/remove
      */
     remove: async (req, res) => {
         try {
             const {linkFor, userId, projectId} = req.body; 
-            await Project.findOneAndUpdate({_id: projectId, 'users.user': userId}, {'$pull': {'links.$.for': linkFor}});
+            await Project.findOneAndUpdate({_id: projectId, 'users.user': userId}, {'$pull': {links: {for: linkFor}}});
             return res.json(Success);
         } catch (err) {
             logger.error({error: err, message: 'An error occured'});
