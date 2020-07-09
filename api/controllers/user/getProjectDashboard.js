@@ -30,7 +30,6 @@ module.exports = async(req, res) => {
             .lean();
         return res.json({...Success, ...project, access});
     } catch(err) {
-        console.log(err);
         logger.error({error: err, message: "An error occured"});
         return res.json(ServerError);    
     }
