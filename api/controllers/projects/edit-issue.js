@@ -6,7 +6,7 @@ const {ServerError, Success, AuthError} = require('../../responses');
 module.exports = {
     /**
      * @desc Express close issue endpoint
-     * @endpoint /api/project/issue/open
+     * @endpoint /api/project/issue/close
      */
     close: async (req, res) => {
         try {
