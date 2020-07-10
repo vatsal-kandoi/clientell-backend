@@ -1,37 +1,34 @@
-const express = require('express');
-
 const logger = require('./winston');
 const mongoDB = require('./db');
 
 module.exports = {
-  app: express(),
   /**
      * @desc Loading express application
      */
-  async load() {
+  async load(app) {
     logger.info({message: 'Configuration options loaded'});
 
     await mongoDB();
     logger.info({message: 'Connected to the database'});
-    if (this.app == undefined) {
-      this.app = express();
+    if (app == undefined) {
+      app = require('express')();
     }
     logger.info({message: 'Initialised express application'});
 
-    this.app = require('./middleware')(this.app);
+    app = require('./middleware')(app);
     logger.info({message: 'Mounted middlewares to express application'});
 
-    this.app.use('/api',require('./routes'));
+    app.use('/api',require('./routes'));
     logger.info({message: 'Mounted express routes'});
     
-    return;
+    return app;
   },
 
   /**
      * @desc Starting express application
      */
-  async run() {
-    this.app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
+  async run(app) {
+    app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
       logger.info({message: `Running express application at ${process.env.PORT || 3000}`});
     });
   },

@@ -11,7 +11,7 @@ module.exports = async(req, res) => {
     try {
         const {userId} = req.body;
         const user = await User.findOne({_id: userId}).select('name email projects createdAt')
-            .populate({path: 'projects', select: '_id name createdAt'}).lean();
+            .populate({path: 'projects', select: '_id name createdAt closed'}).lean();
 
         if (user == null) return res.json(AuthError);
 

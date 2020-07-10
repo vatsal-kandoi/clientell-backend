@@ -1,4 +1,16 @@
-const app = require('./config/mount');
+const express =  require('express');
+const {load, run} = require('./config/mount');
 
-app.load();
-app.run();
+
+let app = express();
+
+async function runApp() {
+    app.get('*.*', express.static('public'));
+    app = await load(app)
+    app.get('*', function (req, res) {
+        res.status(200).sendFile(`/`, {root: 'public'});
+    });
+    run(app);
+}
+
+runApp();
