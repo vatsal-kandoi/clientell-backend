@@ -24,8 +24,8 @@ module.exports = async(req, res) => {
             .populate({path: 'closed.client.by', select: 'name email'})
             .populate({path: 'features', select: 'description deadline status completed accepted addedOn',
                 populate: [{path: 'completed.by', select: 'name email'}, {path: 'accepted.by', select: 'name email'}] })
-            .populate({path: 'issues', select: 'description addedBy addedOn closed',
-                populate: [{path: 'addedBy', select: 'name email'}, {path: 'closed.by', select: 'name email'}]})
+            .populate({path: 'issues', select: 'description addedBy addedOn closed accepted',
+                populate: [{path: 'addedBy', select: 'name email'}, {path: 'closed.by', select: 'name email'}, {path: 'accepted.by', select: 'name email'}]})
             .select('users features issues closed links name')
             .lean();
         return res.json({...Success, ...project, access});

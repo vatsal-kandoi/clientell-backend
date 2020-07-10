@@ -12,10 +12,10 @@ module.exports = async (req, res) => {
     try {
         const {userId, projectId, projectAccess} = req.body;
         if (projectAccess == 'admin') {
-            await Project.findOneAndUpdate({_id: projectId,  users: { $elemMatch: {user: userId, access: 'admin'}}}, {closed: {admin: {value: true, by: userId}}});              
+            await Project.findOneAndUpdate({_id: projectId,  users: { $elemMatch: {user: userId, access: 'admin'}}}, {'closed.admin.value': true, 'closed.admin.by': userId});              
             return res.json(Success);
         } else if(projectAccess == 'client') {
-            await Project.findOneAndUpdate({_id: projectId,  users: { $elemMatch: {user: userId, access: 'client'}}}, {closed: {client: {value: true, by: userId}}});              
+            await Project.findOneAndUpdate({_id: projectId,  users: { $elemMatch: {user: userId, access: 'client'}}}, {'closed.client.value': true, 'closed.client.by': userId});              
             return res.json(Success);
         } else {
             return res.json(AuthError);

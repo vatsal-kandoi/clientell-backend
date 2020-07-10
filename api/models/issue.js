@@ -10,6 +10,11 @@ let issue = new mongoose.Schema({
     closed: {
         value: {type: Boolean, default: false},
         by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
+    },
+    /** By client or admin */
+    accepted: {
+      value: {type: Boolean, default: false},
+      by: {type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null},
     }
 });
 

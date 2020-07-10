@@ -42,5 +42,45 @@ module.exports = {
             logger.error({error: err, message: "An error occured"});
             return res.json(ServerError);
         }
+    },
+    /**
+     * @desc Express accept issue endpoint
+     * @endpoint /api/project/issue/accept
+     */
+    accept: async (req, res) => {
+        try {
+            const {userId, projectId, issueId} = req.body;
+
+            const project = await Project.findOne({_id: projectId, users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}}); 
+            if (project == null) return res.json(AuthError);
+            
+            await Issue.findOneAndUpdate({_id: issueId}, {accepted: {value: true, by: userId}});
+
+            return res.json(Success);
+        } catch(err) {
+            logger.error({error: err, message: "An error occured"});
+            return res.json(ServerError);
+        }
+    },
+    
+    /**
+     * @desc Express reject issue endpoint
+     * @endpoint /api/project/issue/reject
+     */
+    reject: async (req, res) => {
+        try {
+            const {userId, projectId, issueId} = req.body;
+
+            const project = await Project.findOne({_id: projectId, users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}}); 
+            if (project == null) return res.json(AuthError);
+            
+            await Issue.findOneAndUpdate({_id: issueId}, {accepted: {value: false, by: null}});
+
+            return res.json(Success);
+        } catch(err) {
+            logger.error({error: err, message: "An error occured"});
+            return res.json(ServerError);
+        }
     }
+
 }

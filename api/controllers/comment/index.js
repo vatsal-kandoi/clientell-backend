@@ -24,17 +24,18 @@ module.exports = {
                 let hasAccess = await Project.findOne({_id: projectId, 'issues': componentId ,'users.user': userId});              
                 if (hasAccess == null) return res.json(AuthError);
 
-                await Issue.findOneAndUpdate({_id: componentId}, {'$push': {comments: commentId}});
-                return res.json(Success);
+                await Issue.findOneAndUpdate({_id: componentId}, {'$push': {comments: comment._id}});
+                return res.json({...Success, id: comment._id});
             } else {
                 // Feature
                 let hasAccess = await Project.findOne({_id: projectId, 'features': componentId ,'users.user': userId});              
                 if (hasAccess == null) return res.json(AuthError);
 
-                await Feature.findOneAndUpdate({_id: componentId}, {'$push': {comments: commentId}});
-                return res.json(Success);
+                await Feature.findOneAndUpdate({_id: componentId}, {'$push': {comments: comment._id}});
+                return res.json({...Success, id: comment._id});
             }
         } catch (err) {
+            console.log(err);
             logger.error({error: err, message: "An error occured"});
             return res.json(ServerError);    
         }     

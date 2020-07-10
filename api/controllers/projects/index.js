@@ -12,6 +12,8 @@ module.exports.AddIssue = require('./issue').add;
 module.exports.RemoveIssue = require('./issue').remove;
 module.exports.OpenIssue = require('./edit-issue').open;
 module.exports.CloseIssue = require('./edit-issue').close;
+module.exports.AcceptIssue = require('./edit-issue').accept;
+module.exports.RejectIssue = require('./edit-issue').reject;
 
 module.exports.AddFeature = require('./feature').add;
 module.exports.RemoveFeature = require('./feature').remove;

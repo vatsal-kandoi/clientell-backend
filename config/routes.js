@@ -38,6 +38,8 @@ router.post('/project/issue/add', project.AddIssue);
 router.post('/project/issue/remove', project.RemoveIssue);
 router.post('/project/issue/open', project.OpenIssue);
 router.post('/project/issue/close', project.CloseIssue);
+router.post('/project/issue/accept', project.AcceptIssue);
+router.post('/project/issue/reject', project.RejectIssue);
 
 router.post('/project/feature/add', project.AddFeature);
 router.post('/project/feature/remove', project.RemoveFeature);
@@ -51,8 +53,8 @@ router.post('/user/project', user.GetProject);
 router.post('/user/comments', user.GetComments);
 
 /** Comment routes */
-router.post('/comment/add', comment.add);
-router.post('/comment/delete', comment.delete);
+router.post('/project/comment/add', comment.add);
+router.post('/project/comment/delete', comment.delete);
 
 
 router.use('*', (err, req, res, next) => {
