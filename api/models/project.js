@@ -18,6 +18,7 @@ let project = new mongoose.Schema({
     issues: [{type: mongoose.Schema.Types.ObjectId, ref: 'Issue'}],
     createdAt: {type: Date, default: Date.now()},
     by: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    lastAccessed: {type: Date, default: Date.now()},
 });
 
 project.pre('save', next => {
@@ -25,6 +26,12 @@ project.pre('save', next => {
     if(!this.createdAt) this.createdAt = now;
     next();
 });
+project.pre('find', next => {
+    now = new Date();
+    if(!this.lastAccessed) this.lastAccessed = now;
+    next();
+});
+
 
 project = mongoose.model('Project', project);
 

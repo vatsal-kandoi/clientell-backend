@@ -53,6 +53,7 @@ router.post('/user/search', user.SearchUser);
 router.get('/user/project', user.GetAllProject);
 router.post('/user/project', user.GetProject);
 router.post('/user/comments', user.GetComments);
+router.get('/user/overview', user.GetOverview);
 
 /** Comment routes */
 router.post('/project/comment/add', comment.add);
