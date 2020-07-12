@@ -35,7 +35,7 @@ module.exports = {
             const project = await Project.findOne({_id: projectId, users: { $elemMatch: {user: userId, access: 'developer'}}}); 
             if (project == null) return res.json(AuthError);
             
-            await Issue.findOneAndUpdate({_id: issueId}, {closed: {value: false, by: null}});
+            await Issue.findOneAndUpdate({_id: issueId}, {closed: {value: false, by: null}, accepted: {value: false, by: null}});
 
             return res.json(Success);
         } catch(err) {
@@ -51,10 +51,11 @@ module.exports = {
         try {
             const {userId, projectId, issueId} = req.body;
 
-            const project = await Project.findOne({_id: projectId, users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}}); 
+            const project = await Project.findOne({_id: projectId,  users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}}); 
             if (project == null) return res.json(AuthError);
             
-            await Issue.findOneAndUpdate({_id: issueId}, {accepted: {value: true, by: userId}});
+            const issue = await Issue.findOneAndUpdate({_id: issueId, 'closed.value': true}, {accepted: {value: true, by: userId}});
+            if (issue == null) return res.json(AuthError);
 
             return res.json(Success);
         } catch(err) {
@@ -74,7 +75,7 @@ module.exports = {
             const project = await Project.findOne({_id: projectId, users: { $elemMatch: {user: userId, access: {"$in": ['client', 'admin']}}}}); 
             if (project == null) return res.json(AuthError);
             
-            await Issue.findOneAndUpdate({_id: issueId}, {accepted: {value: false, by: null}});
+            await Issue.findOneAndUpdate({_id: issueId}, {accepted: {value: false, by: null}, closed: {value: false, by: null}});
 
             return res.json(Success);
         } catch(err) {

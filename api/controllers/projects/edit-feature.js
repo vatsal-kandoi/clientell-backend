@@ -18,10 +18,10 @@ module.exports = {
             if (hasAccess == null) return res.json(AuthError);
 
             if (status == true) {
-                await Feature.findOneAndUpdate({_id: featureId}, {completed: {value: true, by: userId}, status: 'complete'});
+                await Feature.findOneAndUpdate({_id: featureId}, {completed: {value: true, by: userId}});
                 return res.json(Success);
             } else {
-                await Feature.findOneAndUpdate({_id: featureId}, {completed: {value: false, by: null}, status: 'incomplete'});
+                await Feature.findOneAndUpdate({_id: featureId}, {completed: {value: false, by: null}});
                 return res.json(Success);
             }
         } catch(err) {
@@ -42,10 +42,10 @@ module.exports = {
             if (hasAccess == null) return res.json(AuthError);
 
             if (status == true) {
-                await Feature.findOneAndUpdate({_id: featureId}, {accepted: {value: true, by: userId}});
+                await Feature.findOneAndUpdate({_id: featureId, 'completed.value': true}, {accepted: {value: true, by: userId}});
                 return res.json(Success);
             } else {
-                await Feature.findOneAndUpdate({_id: featureId}, {accepted: {value: false, by: null}});
+                await Feature.findOneAndUpdate({_id: featureId}, {accepted: {value: false, by: null}, completed: {value: false, by: null}});
                 return res.json(Success);
             }
         } catch(err) {

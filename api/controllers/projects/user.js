@@ -1,7 +1,7 @@
 const {User, Project} = require('../../models');
 const logger = require('../../../config/winston');
 
-const {ServerError, Success, NotFound} = require('../../responses');
+const {ServerError, Success, NotFound, AuthError} = require('../../responses');
 
 
 
@@ -18,7 +18,8 @@ module.exports = {
 
             if (userSearched == null) return res.json(NotFound);
 
-            await Project.findOneAndUpdate({_id: projectId, users: {$elemMatch: {user: userId, access: 'admin'}}}, {'$push': {users: { user: userSearched._id, access: mode }}});              
+            const hasAccess = await Project.findOneAndUpdate({_id: projectId, users: {$elemMatch: {user: userId, access: 'admin'}}}, {'$push': {users: { user: userSearched._id, access: mode }}});              
+            if (hasAccess == null) return res.json(AuthError);
             await User.findOneAndUpdate({_id: userSearched._id}, {"$push": {projects: projectId}});
             return res.json({...Success, id: userSearched._id});
         } catch (err) {
@@ -40,7 +41,9 @@ module.exports = {
 
             if (userSearched == null) return res.json(NotFound);
 
-            await Project.findOneAndUpdate({_id: projectId, users: {$elemMatch: {user: userId, access: 'admin'}}}, {'$pull': {users: { user: userSearched._id }}});              
+            const hasAccess = await Project.findOneAndUpdate({_id: projectId, users: {$elemMatch: {user: userId, access: 'admin'}}}, {'$pull': {users: { user: userSearched._id }}});              
+            if (hasAccess == null) return res.json(AuthError);
+
             await User.findOneAndUpdate({_id: userSearched._id}, {"$pull": {projects: projectId}});
 
             return res.json(Success);

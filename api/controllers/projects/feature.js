@@ -1,7 +1,7 @@
 const {Project, Feature} = require('../../models');
 const logger = require('../../../config/winston');
 
-const {ServerError, Success} = require('../../responses');
+const {ServerError, Success, AuthError} = require('../../responses');
 
 
 
@@ -24,8 +24,9 @@ module.exports = {
 
             if (feature == null) return res.json(ServerError);
 
-            await Project.findOneAndUpdate({_id: projectId, users: { $elemMatch: {user: userId, access: 'admin'}}},
+            const hasAccess = await Project.findOneAndUpdate({_id: projectId, 'closed.admin.value': false, 'closed.client.value':false, users: { $elemMatch: {user: userId, access: 'admin'}}},
                 {"$push": { features: feature._id}});
+            if (hasAccess == null) return res.json(AuthError);
             return res.json({...Success, id: feature._id});
         } catch (err) {
             logger.error({error: err, message: 'An error occured'});
