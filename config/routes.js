@@ -11,6 +11,9 @@ const user = require('../api/controllers/user');
 
 /** Validators */
 const AuthValidator = require('../api/validators/auth');
+const CreateValidator = require('../api/validators/create-options');
+const DeleteValidator = require('../api/validators/delete-options');
+const UpdateValidator = require('../api/validators/update-options');
 
 /** Responses */
 const ServerError = require('../api/responses').ServerError;
@@ -20,33 +23,36 @@ const userAuth = require('../api/policies/auth');
 /** Authorization routes */
 router.post('/auth/login', AuthValidator.login, auth.UserLogin);
 router.post('/auth/signup', AuthValidator.signup, auth.UserSignup);
+router.post('/auth/refresh',auth.UserGenerateRefreshToken);
+router.post('/auth/resetpassword', AuthValidator.resetPassword ,auth.UserResetPassword);
+router.post('/auth/forgotpassword', AuthValidator.forgotPassword,auth.UserForgotPassword);
 
 router.use('/project', userAuth);
 router.use('/user', userAuth);
 router.use('/comment', userAuth);
 
 /** Project routes */
-router.post('/project/create', project.AddProject);
-router.post('/project/delete', project.DeleteProject);
-router.post('/project/close', project.CloseProject);
+router.post('/project/create', CreateValidator.project, project.AddProject);
+router.post('/project/delete', DeleteValidator.project, project.DeleteProject);
+router.post('/project/close', UpdateValidator.closeProject, project.CloseProject);
 
-router.post('/project/link/add', project.AddLink);
-router.post('/project/link/remove', project.RemoveLink);
+router.post('/project/link/add', CreateValidator.link,project.AddLink);
+router.post('/project/link/remove', DeleteValidator.link, project.RemoveLink);
 
-router.post('/project/user/add', project.AddUser);
-router.post('/project/user/remove', project.RemoveUser);
+router.post('/project/user/add', UpdateValidator.addUser ,project.AddUser);
+router.post('/project/user/remove', UpdateValidator.deleteUser, project.RemoveUser);
 
-router.post('/project/issue/add', project.AddIssue);
-router.post('/project/issue/remove', project.RemoveIssue);
-router.post('/project/issue/open', project.OpenIssue);
-router.post('/project/issue/close', project.CloseIssue);
-router.post('/project/issue/accept', project.AcceptIssue);
-router.post('/project/issue/reject', project.RejectIssue);
+router.post('/project/issue/add', CreateValidator.issue, project.AddIssue);
+router.post('/project/issue/remove', DeleteValidator.issue, project.RemoveIssue);
+router.post('/project/issue/open', UpdateValidator.openIssue, project.OpenIssue);
+router.post('/project/issue/close', UpdateValidator.closeIssue, project.CloseIssue);
+router.post('/project/issue/accept', UpdateValidator.acceptIssue, project.AcceptIssue);
+router.post('/project/issue/reject', UpdateValidator.rejectIssue, project.RejectIssue);
 
-router.post('/project/feature/add', project.AddFeature);
-router.post('/project/feature/remove', project.RemoveFeature);
-router.post('/project/feature/complete', project.MarkFeatureComplete);
-router.post('/project/feature/accept', project.MarkFeatureAccepted);
+router.post('/project/feature/add', CreateValidator.feature, project.AddFeature);
+router.post('/project/feature/remove', DeleteValidator.feature ,project.RemoveFeature);
+router.post('/project/feature/complete', UpdateValidator.markCompleteFeature ,project.MarkFeatureComplete);
+router.post('/project/feature/accept', UpdateValidator.acceptFeature ,project.MarkFeatureAccepted);
 
 /** User routes and dashboard */
 router.post('/user/search', user.SearchUser);
@@ -56,8 +62,8 @@ router.post('/user/comments', user.GetComments);
 router.get('/user/overview', user.GetOverview);
 
 /** Comment routes */
-router.post('/project/comment/add', comment.add);
-router.post('/project/comment/delete', comment.delete);
+router.post('/project/comment/add', CreateValidator.comment ,comment.add);
+router.post('/project/comment/delete', DeleteValidator.comment, comment.delete);
 
 
 router.use('*', (err, req, res, next) => {
