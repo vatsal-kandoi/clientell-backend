@@ -26,15 +26,16 @@ module.exports = async (req, res) => {
         user = await user.save();
         if (user == null) return res.json(ServerError);
         
-        let access_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'access_token', expires: Date.now() + 300*60*1000 });
-        let refresh_token = await generate({ id: user._id, email: user.email, access: 'user', type: 'refresh_token', expires: Date.now() + 300*60*1000 });
+        let access_token = await generate('access',{ id: user._id, email: user.email, access: 'user', type: 'access_token', expires: Date.now() + 300*60*1000 });
+        let refresh_token = await generate('refresh',{ id: user._id, email: user.email, access: 'user', type: 'refresh_token', expires: Date.now() + 300*60*1000 });
         
         if (access_token.success == false || refresh_token.success == undefined) return res.json(ServerError);
         
+        res.cookie('ClienTel', refresh_token.token, {httpOnly: true, signed: true});
+
         return res.json({
             ...Success,
             access_token: access_token.token,
-            refresh_token: refresh_token.token,
             name: user.name,
         });
     } catch (err) {

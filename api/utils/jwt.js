@@ -6,7 +6,7 @@ module.exports = {
      * @desc Generate a jwt token
      * @param data JSON data of user
      */
-  generate: (data) => {
+  generate: (type, data) => {
     return new Promise((resolve, reject) => {
       jwt.sign({ ...data }, JWT, (err, result) => {
         if (err || result == null) {

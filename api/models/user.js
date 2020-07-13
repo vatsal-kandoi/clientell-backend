@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 let user = new mongoose.Schema({
+    passwordResetSecret: {
+        createdAt: {type: Date},
+        code: {type: String},
+    },
+
     name: {type: String},
     email: {type: String},
     password: {type: String},

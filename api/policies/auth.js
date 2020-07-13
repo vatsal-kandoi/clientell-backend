@@ -14,19 +14,7 @@ module.exports = async (req, res, next) => {
     const token = await verify(accessToken);
 
     if (token.success != true || token.access != 'user' && (token.type != 'access_token' && token.type != 'refresh_token')) return res.status(401).json(AuthError);
-    if (token.success == true && token.type == 'access_token' && token.expires < Date.now()) return res.status(401).json({...RequireRefreshToken});
-
-    if (token.success == true && token.type == 'refresh_token' && token.expires > Date.now()) return res.status(401).json(AuthError)
-    else if (token.success == true && token.type == 'refresh_token' && token.expires < Date.now()) {
-      let tokens = await generateTokens(token.email, token.id);
-      if (tokens.success == false) return res.json(AuthError);
-      return res.status(403).json({
-        success: true,
-        code: 403,
-        access_token: tokens.access_token,
-        refresh_token: tokens.refresh_token 
-      });     
-    }
+    if (token.success == true && token.type == 'access_token' && token.expires > Date.now()) return res.status(401).json({...AuthError, RequireRefreshToken: true});
 
     req.body.email = token.email;
     req.body.userId = token.id;
