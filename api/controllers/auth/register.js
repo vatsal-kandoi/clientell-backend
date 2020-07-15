@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
         
         if (access_token.success == false || refresh_token.success == undefined) return res.json(ServerError);
         
-        res.cookie('ClienTel', refresh_token.token, {httpOnly: true, signed: true});
+        res.cookie('ClienTel', refresh_token.token);
 
         return res.json({
             ...Success,
@@ -39,6 +39,7 @@ module.exports = async (req, res) => {
             name: user.name,
         });
     } catch (err) {
+        console.log(err);
         logger.error({error: err, message: "An error occured"});
         return res.json(ServerError);
     }

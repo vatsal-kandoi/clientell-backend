@@ -3,3 +3,4 @@ module.exports.UserSignup = require('./register');
 module.exports.UserGenerateRefreshToken = require('./refresh');
 module.exports.UserForgotPassword = require('./forgotPassword');
 module.exports.UserResetPassword = require('./resetPassword');
+module.exports.logout = require('./logout');

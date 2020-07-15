@@ -11,16 +11,16 @@ const {hash} = require('../../utils/password');
  */
 module.exports = async (req, res) => {
     try {
-        const {newPassword, token} = req.body;
+        const {password, token} = req.body;
         const decoded = await verify(token);
 
-        if (decoded.success == false || decoded.expires > Date.now()) return res.json(AuthError) 
-        const {email, code} = decoded;
-
+        if (decoded.success == false || decoded.expires < Date.now()) return res.json(AuthError) 
+        const {email, secret_code} = decoded;
         const canUpdate = await User.findOne({email});
-        if (canUpdate.passwordResetSecret.code == code || Date(canUpdate.passwordResetSecret.createdAt).now() + 3000 * 30 > Date.now()) return res.json({...AuthError, message: 'Link expired. Please retry'});
 
-        const hashed = await hash(newPassword);
+        if (canUpdate.passwordResetSecret.code != secret_code || canUpdate.passwordResetSecret.expires < Date.now()) return res.json({...AuthError, message: 'Link expired. Please retry'});
+
+        const hashed = await hash(password);
         const updated = await User.findOne({email},{password: hashed});
 
         if (updated == false) return res.json(ServerError);

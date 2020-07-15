@@ -18,13 +18,13 @@ module.exports = async (req, res) => {
         const user = await User.findOne({email});
         if (user == null) return res.json(NotFound);
         const random = await randomstring.generate(6);
-        const updated = await User.findOneAndUpdate({_id: user._id}, {passwordResetSecret: {createdAt: new Date(), code: random}});
+        const updated = await User.findOneAndUpdate({_id: user._id}, {passwordResetSecret: {expires: Date.now() + 30 * 300000, code: random}});
         if (updated == null) return res.json(ServerError);
 
         const token = await generate('password', {email, type: 'password_reset', secret_code: random});
         if (!token.success) return res.json(ServerError);
         
-        const mailSent = await mailer(user.email, `http://localhost:4200/auth/resetpassword?token=${token}`);
+        const mailSent = await mailer(user.email, `https://clientel.herokuapp.com/auth/resetpassword?token=${token.token}`);
         if (mailSent) return res.json(Success);
         return res.json(ServerError)
     } catch (err) {

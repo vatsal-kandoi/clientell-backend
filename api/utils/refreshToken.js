@@ -12,8 +12,8 @@ module.exports = async (email, id) => {
 
         return {
             success: true,
-            access_token,
-            refresh_token,
+            access_token: access_token.token,
+            refresh_token:refresh_token.token,
         };
     } catch (err) {
         logger.error({ error: err, message: `An error occured` });

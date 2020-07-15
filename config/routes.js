@@ -26,7 +26,7 @@ router.post('/auth/signup', AuthValidator.signup, auth.UserSignup);
 router.post('/auth/refresh',auth.UserGenerateRefreshToken);
 router.post('/auth/resetpassword', AuthValidator.resetPassword ,auth.UserResetPassword);
 router.post('/auth/forgotpassword', AuthValidator.forgotPassword,auth.UserForgotPassword);
-
+router.post('/auth/logout', auth.logout);
 router.use('/project', userAuth);
 router.use('/user', userAuth);
 router.use('/comment', userAuth);

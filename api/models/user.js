@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 let user = new mongoose.Schema({
     passwordResetSecret: {
-        createdAt: {type: Date},
+        expires: {type: Number},
         code: {type: String},
     },
 

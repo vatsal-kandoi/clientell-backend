@@ -9,7 +9,7 @@ const logger = require('../../../config/winston');
  * @endpoint /api/auth/refresh
  */
 module.exports = async (req, res) => {
-    if (req.cookies['ClienTel'] == undefined) res.json(AuthError);
+    if (req.cookies['ClienTel'] == undefined) return res.json(AuthError);
     try {
         let cookie = req.cookies['ClienTel'];
         const data = await verify(cookie);
@@ -17,11 +17,11 @@ module.exports = async (req, res) => {
             res.cookie('ClienTel', '', {expires: 0});
             return res.json(AuthError);
         }
-        if (data.type != refresh_token || data.expires > Date.now()) return res.json(AuthError);
+        if (data.type != 'refresh_token' || data.expires < Date.now()) return res.json(AuthError);
         const newTokens = await refresh(data.email, data.id);
         if (!newTokens.success) return res.json(AuthError);
         else {
-            res.cookie('ClienTel', newTokens.refresh_token, {httpOnly: true});
+            res.cookie('ClienTel', newTokens.refresh_token);
             res.json({
                 success: true,
                 access_token: newTokens.access_token

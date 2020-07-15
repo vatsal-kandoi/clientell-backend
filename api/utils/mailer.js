@@ -1,6 +1,4 @@
 const nodemailer = require('nodemailer');
-const nodemailer = require("nodemailer");
-
 /**
  * @desc Send a system email
  * @param {string} to Email to be sent to
